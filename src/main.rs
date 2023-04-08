@@ -2,7 +2,7 @@ use std::io::{self, Write};
 
 fn main() {
     loop {
-        print!("Digite um número ou 'sair' para sair: ");
+        print!("Digite uma expressão matemática (+, -, *, /) ou 'sair' para sair: ");
         io::stdout().flush().unwrap();
 
         let mut input = String::new();
@@ -13,18 +13,23 @@ fn main() {
             break;
         }
 
-        let numero1 = input.trim().parse::<f64>().unwrap();
+        let parts = input.trim().split_whitespace().collect::<Vec<&str>>();
 
-        print!("Digite outro número: ");
-        io::stdout().flush().unwrap();
+        let operator = parts[1];
+        let n1 = parts[0].parse::<f64>().unwrap();
+        let n2 = parts[2].parse::<f64>().unwrap();
 
-        let mut input = String::new();
-        io::stdin().read_line(&mut input).unwrap();
+        let resultado = match operator {
+            "+" => n1 + n2,
+            "-" => n1 - n2,
+            "*" => n1 * n2,
+            "/" => n1 / n2,
+            _ => {
+                println!("Operador inválido");
+                continue;
+            }
+        };
 
-        let numero2 = input.trim().parse::<f64>().unwrap();
-
-        let resultado = numero1 + numero2;
-
-        println!("O resultado da soma é {}", resultado);
+        println!("O resultado é {}", resultado);
     }
 }
